@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melolo Web</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-white">
+    <nav class="sticky top-0 bg-black/95 p-4 border-b border-gray-800 flex justify-around font-bold z-50">
+        <a href="/" class="<%= active === 'home' ? 'text-blue-500' : '' %>">Home</a>
+        <a href="/hot" class="<%= active === 'hot' ? 'text-blue-500' : '' %>">Hot</a>
+        <a href="/for-you" class="<%= active === 'foryou' ? 'text-blue-500' : '' %>">For You</a>
+    </nav>
+
+    <div class="p-4 space-y-8">
+        <% sections.forEach(section => { %>
+            <section>
+                <h2 class="text-xl font-bold mb-4 px-2 border-l-4 border-blue-500 ml-2"><%= section.label %></h2>
+                <div class="flex overflow-x-auto space-x-4 pb-4 no-scrollbar">
+                    <% section.data.forEach(item => { %>
+                        <a href="/detail/<%= item.id %>" class="min-w-[140px] md:min-w-[180px] block bg-gray-900 rounded-lg overflow-hidden flex-shrink-0 transition transform hover:scale-105">
+                            <img src="<%= item.image %>" class="w-full aspect-[3/4] object-cover">
+                            <p class="p-2 text-xs truncate"><%= item.title %></p>
+                        </a>
+                    <% }) %>
+                </div>
+            </section>
+        <% }) %>
+    </div>
+
+    <style> .no-scrollbar::-webkit-scrollbar { display: none; } </style>
+</body>
+</html>
