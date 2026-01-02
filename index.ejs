@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Melolo Web</title>
+    <title>Melolo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .tab-content { display: none; }
@@ -14,41 +14,53 @@
 </head>
 <body class="bg-black text-white">
     <nav class="sticky top-0 bg-black/95 p-4 border-b border-gray-800 flex justify-around font-bold z-50">
-        <button onclick="openTab('home')" class="tab-btn active px-2" id="btn-home">HOME</button>
-        <button onclick="openTab('hot')" class="tab-btn px-2" id="btn-hot">HOT</button>
-        <button onclick="openTab('foryou')" class="tab-btn px-2" id="btn-foryou">FOR YOU</button>
+        <button onclick="openTab('home')" class="tab-btn active px-2 pb-1" id="btn-home">HOME</button>
+        <button onclick="openTab('hot')" class="tab-btn px-2 pb-1" id="btn-hot">HOT</button>
+        <button onclick="openTab('foryou')" class="tab-btn px-2 pb-1" id="btn-foryou">FOR YOU</button>
     </nav>
 
     <div id="home" class="tab-content active p-4 space-y-6">
         <section>
-            <h2 class="text-lg font-bold mb-4 border-l-4 border-blue-600 pl-2">Drama Terbaru</h2>
+            <h2 class="text-lg font-bold mb-4 border-l-4 border-blue-600 pl-2 uppercase tracking-tighter">Terbaru</h2>
             <div class="flex overflow-x-auto gap-4 no-scrollbar">
                 <% latest.forEach(book => { %>
-                    <a href="/detail/<%= book.book_id %>" class="min-w-[140px] block">
-                        <img src="<%= book.thumb_url || book.series_cover || book.cover %>" class="w-full aspect-[3/4] object-cover rounded-lg border border-gray-800">
-                        <p class="mt-2 text-[11px] line-clamp-2"><%= book.book_name %></p>
+                    <a href="/detail/<%= book.book_id %>" class="min-w-[130px] block transition transform active:scale-95">
+                        <img src="<%= book.thumb_url || book.series_cover %>" class="w-full aspect-[3/4] object-cover rounded-xl border border-gray-800 shadow-lg">
+                        <p class="mt-2 text-[10px] font-bold truncate"><%= book.book_name %></p>
                     </a>
                 <% }) %>
             </div>
         </section>
-        </div>
+        
+        <section>
+            <h2 class="text-lg font-bold mb-4 border-l-4 border-red-600 pl-2 uppercase tracking-tighter">Trending</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <% trending.slice(0, 4).forEach(book => { %>
+                    <a href="/detail/<%= book.book_id %>" class="relative rounded-2xl overflow-hidden aspect-video border border-gray-800">
+                        <img src="<%= book.thumb_url || book.series_cover %>" class="w-full h-full object-cover opacity-60">
+                        <div class="absolute bottom-0 p-2 bg-gradient-to-t from-black w-full text-[10px] font-bold"><%= book.book_name %></div>
+                    </a>
+                <% }) %>
+            </div>
+        </section>
+    </div>
 
     <div id="hot" class="tab-content p-4 grid grid-cols-3 gap-3">
         <% trending.forEach(book => { %>
             <a href="/detail/<%= book.book_id %>">
-                <img src="<%= book.thumb_url || book.series_cover || book.cover %>" class="w-full aspect-[3/4] object-cover rounded-lg">
-                <p class="mt-1 text-[10px] truncate"><%= book.book_name %></p>
+                <img src="<%= book.thumb_url || book.series_cover %>" class="w-full aspect-[3/4] object-cover rounded-xl">
+                <p class="mt-1 text-[9px] truncate text-center font-bold uppercase"><%= book.book_name %></p>
             </a>
         <% }) %>
     </div>
 
     <div id="foryou" class="tab-content p-4 space-y-4">
         <% [...trending].sort(() => Math.random() - 0.5).forEach(book => { %>
-            <a href="/detail/<%= book.book_id %>" class="flex gap-4 bg-gray-900 p-3 rounded-xl">
-                <img src="<%= book.thumb_url || book.series_cover || book.cover %>" class="w-24 h-32 object-cover rounded-lg shrink-0">
-                <div class="flex flex-col justify-center">
-                    <h4 class="font-bold text-blue-400 text-sm"><%= book.book_name %></h4>
-                    <p class="text-[10px] text-gray-400 line-clamp-3 mt-1"><%= book.abstract || 'Tonton drama seru ini sekarang.' %></p>
+            <a href="/detail/<%= book.book_id %>" class="flex gap-4 bg-gray-900/50 p-3 rounded-2xl border border-gray-800">
+                <img src="<%= book.thumb_url || book.series_cover %>" class="w-20 h-28 object-cover rounded-xl shrink-0 shadow-md">
+                <div class="flex flex-col justify-center overflow-hidden">
+                    <h4 class="font-bold text-blue-400 text-sm truncate"><%= book.book_name %></h4>
+                    <p class="text-[10px] text-gray-500 line-clamp-3 mt-1"><%= book.abstract %></p>
                 </div>
             </a>
         <% }) %>
@@ -60,6 +72,7 @@
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             document.getElementById('btn-' + id).classList.add('active');
+            window.scrollTo(0,0);
         }
     </script>
 </body>
