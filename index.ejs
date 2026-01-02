@@ -4,76 +4,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="no-referrer">
-    <title>Melolo</title>
+    <title>Melolo - Nonton Drama Pendek</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .tab-btn.active { color: #3b82f6; border-bottom: 2px solid #3b82f6; }
+        .tab-btn.active { color: #3b82f6; border-bottom: 3px solid #3b82f6; }
+        /* Sembunyikan scrollbar tapi tetap bisa scroll */
         .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="bg-black text-white font-sans">
-    <nav class="sticky top-0 bg-black/95 p-4 border-b border-gray-800 flex justify-around font-bold z-50">
-        <button onclick="openTab('home')" class="tab-btn active px-2 pb-1" id="btn-home">HOME</button>
-        <button onclick="openTab('hot')" class="tab-btn px-2 pb-1" id="btn-hot">HOT</button>
-        <button onclick="openTab('foryou')" class="tab-btn px-2 pb-1" id="btn-foryou">FOR YOU</button>
+<body class="bg-black text-white font-sans antialiased">
+
+    <nav class="sticky top-0 bg-black/95 backdrop-blur-sm p-4 border-b border-gray-800 flex justify-around font-bold z-50">
+        <button onclick="openTab('home')" class="tab-btn active px-4 pb-2 transition-all duration-300" id="btn-home">HOME</button>
+        <button onclick="openTab('hot')" class="tab-btn px-4 pb-2 transition-all duration-300" id="btn-hot">HOT</button>
+        <button onclick="openTab('foryou')" class="tab-btn px-4 pb-2 transition-all duration-300" id="btn-foryou">FOR YOU</button>
     </nav>
 
-    <div id="home" class="tab-content active p-4 space-y-8">
+    <div id="home" class="tab-content active p-4 space-y-8 animate-fadeIn">
         <section>
-            <h2 class="text-xl font-bold mb-4 border-l-4 border-blue-600 pl-3">TERBARU</h2>
-            <div class="flex overflow-x-auto gap-4 no-scrollbar">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-black italic border-l-4 border-blue-600 pl-3 uppercase">Terbaru</h2>
+            </div>
+            <div class="flex overflow-x-auto gap-4 no-scrollbar pb-2">
                 <% latest.forEach(book => { %>
-                    <a href="/detail/<%= book.book_id %>" class="min-w-[130px] block transition active:scale-95">
-                        <img src="<%= book.thumb_url || book.series_cover || book.cover %>" class="w-full aspect-[3/4] object-cover rounded-xl border border-gray-700 bg-gray-900" loading="lazy">
-                        <p class="mt-2 text-[10px] font-semibold line-clamp-2 leading-tight"><%= book.book_name %></p>
+                    <a href="/detail/<%= book.book_id %>" class="min-w-[140px] max-w-[140px] block transition transform active:scale-95">
+                        <div class="relative aspect-[3/4] bg-gray-900 rounded-xl overflow-hidden border border-gray-800">
+                            <img src="<%= book.thumb_url || book.series_cover || book.cover %>" 
+                                 referrerpolicy="no-referrer" 
+                                 loading="lazy"
+                                 class="w-full h-full object-cover"
+                                 onerror="this.src='https://via.placeholder.com/300x400?text=No+Cover'">
+                        </div>
+                        <p class="mt-2 text-[11px] font-bold line-clamp-2 leading-tight text-gray-200"><%= book.book_name %></p>
                     </a>
                 <% }) %>
             </div>
         </section>
         
         <section>
-            <h2 class="text-xl font-bold mb-4 border-l-4 border-red-600 pl-3">TRENDING</h2>
+            <h2 class="text-xl font-black italic mb-4 border-l-4 border-red-600 pl-3 uppercase">Trending</h2>
             <div class="grid grid-cols-2 gap-4">
                 <% trending.slice(0, 4).forEach(book => { %>
-                    <a href="/detail/<%= book.book_id %>" class="relative rounded-2xl overflow-hidden aspect-video border border-gray-800 bg-gray-900">
-                        <img src="<%= book.thumb_url || book.series_cover || book.cover %>" class="w-full h-full object-cover opacity-60">
-                        <div class="absolute bottom-0 p-2 bg-gradient-to-t from-black w-full text-[10px] font-bold"><%= book.book_name %></div>
+                    <a href="/detail/<%= book.book_id %>" class="relative group rounded-2xl overflow-hidden aspect-video bg-gray-900 border border-gray-800">
+                        <img src="<%= book.thumb_url || book.series_cover || book.cover %>" 
+                             referrerpolicy="no-referrer"
+                             class="w-full h-full object-cover opacity-70 group-active:opacity-100 transition">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent flex items-end p-3">
+                            <span class="text-[10px] font-black truncate text-white shadow-sm"><%= book.book_name %></span>
+                        </div>
                     </a>
                 <% }) %>
             </div>
         </section>
     </div>
 
-    <div id="hot" class="tab-content p-4 grid grid-cols-3 gap-3">
+    <div id="hot" class="tab-content p-4 grid grid-cols-3 gap-3 animate-fadeIn">
         <% trending.forEach(book => { %>
-            <a href="/detail/<%= book.book_id %>">
-                <img src="<%= book.thumb_url || book.series_cover %>" class="w-full aspect-[3/4] object-cover rounded-xl bg-gray-900">
-                <p class="mt-1 text-[9px] truncate text-center font-bold uppercase"><%= book.book_name %></p>
+            <a href="/detail/<%= book.book_id %>" class="block">
+                <div class="aspect-[3/4] bg-gray-900 rounded-lg overflow-hidden border border-gray-800">
+                    <img src="<%= book.series_cover || book.thumb_url %>" 
+                         referrerpolicy="no-referrer"
+                         class="w-full h-full object-cover">
+                </div>
+                <p class="mt-1 text-[9px] truncate text-center font-bold text-gray-400 uppercase"><%= book.book_name %></p>
             </a>
         <% }) %>
     </div>
 
-    <div id="foryou" class="tab-content p-4 space-y-4">
+    <div id="foryou" class="tab-content p-4 space-y-4 animate-fadeIn">
         <% [...trending].sort(() => Math.random() - 0.5).forEach(book => { %>
-            <a href="/detail/<%= book.book_id %>" class="flex gap-4 bg-gray-900/50 p-3 rounded-2xl border border-gray-800">
-                <img src="<%= book.thumb_url || book.series_cover %>" class="w-20 h-28 object-cover rounded-xl shrink-0 bg-gray-800">
-                <div class="flex flex-col justify-center">
-                    <h4 class="font-bold text-blue-400 text-sm"><%= book.book_name %></h4>
-                    <p class="text-[10px] text-gray-500 line-clamp-3 mt-1"><%= book.abstract %></p>
+            <a href="/detail/<%= book.book_id %>" class="flex gap-4 bg-gray-900/40 p-3 rounded-2xl border border-gray-800 active:bg-gray-800 transition">
+                <div class="w-20 h-28 bg-gray-800 rounded-xl overflow-hidden shrink-0 shadow-lg">
+                    <img src="<%= book.thumb_url || book.series_cover %>" 
+                         referrerpolicy="no-referrer"
+                         class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col justify-center overflow-hidden">
+                    <h4 class="font-black text-blue-500 text-sm truncate uppercase italic tracking-tighter"><%= book.book_name %></h4>
+                    <p class="text-[10px] text-gray-400 line-clamp-3 mt-1 leading-normal"><%= book.abstract || 'Klik untuk melihat detail drama menarik ini.' %></p>
+                    <div class="mt-2 flex gap-1">
+                        <span class="text-[8px] bg-blue-900/50 text-blue-400 px-2 py-0.5 rounded font-bold">RECOMMENDED</span>
+                    </div>
                 </div>
             </a>
         <% }) %>
     </div>
 
     <script>
-        function openTab(id) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            document.getElementById('btn-' + id).classList.add('active');
-            window.scrollTo(0,0);
+        function openTab(tabName) {
+            // Sembunyikan semua tab
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            // Reset status tombol
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            // Aktifkan tab dan tombol yang dipilih
+            document.getElementById(tabName).classList.add('active');
+            document.getElementById('btn-' + tabName).classList.add('active');
+            // Scroll ke atas otomatis setiap pindah tab
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
 </body>
