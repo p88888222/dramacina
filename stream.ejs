@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sedang Menonton - <%= stream.title %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-white h-screen flex flex-col">
+    <div class="p-4 bg-black flex items-center">
+        <button onclick="history.back()" class="mr-4 text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7 7-7" />
+            </svg>
+        </button>
+        <span class="truncate text-sm font-medium"><%= stream.title %></span>
+    </div>
+
+    <div class="flex-1 flex items-center justify-center bg-black">
+        <div class="w-full max-w-5xl aspect-video relative">
+            <iframe 
+                src="<%= stream.url %>" 
+                class="absolute inset-0 w-full h-full rounded-md" 
+                allowfullscreen 
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+            </iframe>
+        </div>
+    </div>
+
+    <div class="p-8 text-center">
+        <p class="text-gray-500 text-xs italic">Jika video tidak muncul, pastikan koneksi internet stabil atau coba refresh halaman.</p>
+    </div>
+</body>
+</html>
