@@ -7,28 +7,46 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-black text-white">
-    <div class="p-4 flex items-center bg-gray-900 sticky top-0 z-50">
-        <button onclick="history.back()" class="mr-4 text-blue-400">← Kembali</button>
-        <h1 class="font-bold truncate"><%= drama.series_title %></h1>
+    <div class="sticky top-0 bg-gray-900/90 p-4 flex items-center z-50">
+        <button onclick="history.back()" class="text-blue-400 mr-4 font-bold">←</button>
+        <h1 class="truncate font-bold"><%= drama.series_title %></h1>
     </div>
 
-    <div class="p-4 max-w-2xl mx-auto">
-        <img src="<%= drama.series_cover %>" class="w-full rounded-2xl shadow-lg mb-6 border border-gray-800">
-        
-        <h2 class="text-2xl font-bold mb-2"><%= drama.series_title %></h2>
-        <p class="text-sm text-gray-400 mb-6 leading-relaxed"><%= drama.series_intro %></p>
+    <div class="p-4 max-w-3xl mx-auto">
+        <div class="relative w-full aspect-[4/5] md:aspect-video rounded-3xl overflow-hidden mb-6 shadow-2xl">
+            <img src="<%= drama.series_cover || drama.cover || (drama.video_list && drama.video_list[0].cover) %>" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+            <div class="absolute bottom-6 left-6">
+                <span class="bg-blue-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+                    <%= drama.episode_right_text %>
+                </span>
+            </div>
+        </div>
 
-        <h3 class="font-bold text-lg mb-4">Episode (<%= drama.episode_cnt %>)</h3>
+        <h2 class="text-3xl font-extrabold mb-3"><%= drama.series_title %></h2>
+        <div class="bg-gray-900/50 p-4 rounded-2xl mb-8">
+            <p class="text-gray-300 text-sm leading-relaxed">
+                <%= drama.series_intro %>
+            </p>
+        </div>
+
+        <h3 class="text-xl font-bold mb-4 flex items-center">
+            <span class="w-2 h-6 bg-blue-500 mr-3 rounded-full"></span>
+            Semua Episode
+        </h3>
         <div class="grid grid-cols-1 gap-3">
             <% drama.video_list.forEach((vid, index) => { %>
-                <a href="/stream/<%= vid.video_id || index %>" class="bg-gray-900 p-4 rounded-xl flex items-center justify-between border border-gray-800 hover:bg-gray-800">
-                    <div class="flex items-center">
-                        <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mr-4 font-bold">
-                            <%= index + 1 %>
-                        </div>
-                        <span class="text-sm font-medium">Episode <%= index + 1 %></span>
+                <a href="/stream/<%= vid.video_id %>" class="flex items-center gap-4 bg-gray-900 p-3 rounded-2xl border border-gray-800 hover:bg-gray-800 transition">
+                    <img src="<%= vid.cover || drama.series_cover %>" class="w-24 h-16 object-cover rounded-lg shrink-0">
+                    <div class="flex-1">
+                        <p class="text-sm font-bold">Episode <%= index + 1 %></p>
+                        <p class="text-[10px] text-gray-500 uppercase">HD Quality</p>
                     </div>
-                    <span class="text-blue-500 text-xs">Nonton →</span>
+                    <div class="bg-blue-600/20 p-2 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
                 </a>
             <% }) %>
         </div>
