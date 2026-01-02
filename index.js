@@ -8,6 +8,7 @@ const BASE_URL = 'https://api.sansekai.my.id/api/melolo';
 app.set('view engine', 'ejs');
 app.set('views', __dirname);
 
+// Route Utama: Mengambil Latest dan Trending
 app.get('/', async (req, res) => {
     try {
         const [latestRes, trendingRes] = await Promise.all([
@@ -15,7 +16,6 @@ app.get('/', async (req, res) => {
             axios.get(`${BASE_URL}/trending`)
         ]);
 
-        // Mengambil array dari property 'books'
         const latest = latestRes.data.books || [];
         const trending = trendingRes.data.books || [];
 
@@ -26,26 +26,26 @@ app.get('/', async (req, res) => {
     }
 });
 
-// Detail Drama menggunakan book_id
+// Route Detail
 app.get('/detail/:book_id', async (req, res) => {
     try {
         const response = await axios.get(`${BASE_URL}/detail?id=${req.params.book_id}`);
-        // Asumsi detail juga mengembalikan objek di dalam 'data' atau 'book'
+        // Mengirim data drama dari respons API
         res.render('detail', { drama: response.data.data });
     } catch (err) {
-        res.send("Gagal memuat detail drama.");
+        res.status(500).send("Gagal memuat detail drama.");
     }
 });
 
-// Stream Drama menggunakan id episode
+// Route Stream
 app.get('/stream/:ep_id', async (req, res) => {
     try {
         const response = await axios.get(`${BASE_URL}/stream?id=${req.params.ep_id}`);
         res.render('stream', { stream: response.data.data });
     } catch (err) {
-        res.send("Gagal memuat player.");
+        res.status(500).send("Gagal memuat video.");
     }
 });
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server aktif di port ${PORT}`));
 
