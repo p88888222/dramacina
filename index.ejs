@@ -1,33 +1,77 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Melolo Web</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .tab-btn.active { color: #3b82f6; border-bottom: 2px solid #3b82f6; }
+    </style>
 </head>
 <body class="bg-black text-white">
+
     <nav class="sticky top-0 bg-black/95 p-4 border-b border-gray-800 flex justify-around font-bold z-50">
-        <a href="/" class="<%= active === 'home' ? 'text-blue-500' : '' %>">Home</a>
-        <a href="/hot" class="<%= active === 'hot' ? 'text-blue-500' : '' %>">Hot</a>
-        <a href="/for-you" class="<%= active === 'foryou' ? 'text-blue-500' : '' %>">For You</a>
+        <button onclick="openTab('home')" class="tab-btn active px-4 py-2" id="btn-home">Home</button>
+        <button onclick="openTab('hot')" class="tab-btn px-4 py-2" id="btn-hot">Hot</button>
+        <button onclick="openTab('foryou')" class="tab-btn px-4 py-2" id="btn-foryou">For You</button>
     </nav>
 
-    <div class="p-4 space-y-8">
-        <% sections.forEach(section => { %>
-            <section>
-                <h2 class="text-xl font-bold mb-4 px-2 border-l-4 border-blue-500 ml-2"><%= section.label %></h2>
-                <div class="flex overflow-x-auto space-x-4 pb-4 no-scrollbar">
-                    <% section.data.forEach(item => { %>
-                        <a href="/detail/<%= item.id %>" class="min-w-[140px] md:min-w-[180px] block bg-gray-900 rounded-lg overflow-hidden flex-shrink-0 transition transform hover:scale-105">
-                            <img src="<%= item.image %>" class="w-full aspect-[3/4] object-cover">
-                            <p class="p-2 text-xs truncate"><%= item.title %></p>
-                        </a>
-                    <% }) %>
-                </div>
-            </section>
-        <% }) %>
+    <div id="home" class="tab-content active p-4 space-y-8">
+        <section>
+            <h2 class="text-xl font-bold mb-4 border-l-4 border-blue-500 pl-2">Drama Terbaru</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <% latest.forEach(item => { %>
+                    <a href="/detail/<%= item.id %>" class="bg-gray-900 rounded-lg overflow-hidden">
+                        <img src="<%= item.image %>" class="w-full aspect-[3/4] object-cover">
+                        <p class="p-2 text-xs truncate"><%= item.title %></p>
+                    </a>
+                <% }) %>
+            </div>
+        </section>
     </div>
 
-    <style> .no-scrollbar::-webkit-scrollbar { display: none; } </style>
+    <div id="hot" class="tab-content p-4">
+        <h2 class="text-xl font-bold mb-4 border-l-4 border-red-500 pl-2">Trending Sekarang</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            <% trending.forEach(item => { %>
+                <a href="/detail/<%= item.id %>" class="bg-gray-900 rounded-lg overflow-hidden border border-gray-800">
+                    <img src="<%= item.image %>" class="w-full aspect-[3/4] object-cover">
+                    <p class="p-2 text-xs truncate"><%= item.title %></p>
+                </a>
+            <% }) %>
+        </div>
+    </div>
+
+    <div id="foryou" class="tab-content p-4">
+        <h2 class="text-xl font-bold mb-4 border-l-4 border-purple-500 pl-2">Rekomendasi Untukmu</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4" id="foryou-list">
+            <% [...trending].sort(() => Math.random() - 0.5).forEach(item => { %>
+                <a href="/detail/<%= item.id %>" class="bg-gray-900 rounded-lg overflow-hidden">
+                    <img src="<%= item.image %>" class="w-full aspect-[3/4] object-cover">
+                    <p class="p-2 text-xs truncate"><%= item.title %></p>
+                </a>
+            <% }) %>
+        </div>
+    </div>
+
+    <script>
+        function openTab(tabName) {
+            // Sembunyikan semua konten
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            // Hilangkan status active di semua tombol
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            // Tampilkan yang dipilih
+            document.getElementById(tabName).classList.add('active');
+            document.getElementById('btn-' + tabName).classList.add('active');
+        }
+    </script>
 </body>
 </html>
+
