@@ -8,44 +8,39 @@ const BASE_URL = 'https://api.sansekai.my.id/api/melolo';
 app.set('view engine', 'ejs');
 app.set('views', __dirname);
 
-// Route Utama: Mengambil Latest dan Trending
 app.get('/', async (req, res) => {
     try {
         const [latestRes, trendingRes] = await Promise.all([
             axios.get(`${BASE_URL}/latest`),
             axios.get(`${BASE_URL}/trending`)
         ]);
-
-        const latest = latestRes.data.books || [];
-        const trending = trendingRes.data.books || [];
-
-        res.render('index', { latest, trending });
+        res.render('index', { 
+            latest: latestRes.data.books || [], 
+            trending: trendingRes.data.books || [] 
+        });
     } catch (err) {
-        console.error("API Error:", err.message);
         res.render('index', { latest: [], trending: [] });
     }
 });
 
-// Route Detail
-app.get('/detail/:book_id', async (req, res) => {
+app.get('/detail/:id', async (req, res) => {
     try {
-        const response = await axios.get(`${BASE_URL}/detail?id=${req.params.book_id}`);
-        // Mengirim data drama dari respons API
+        // Menggunakan parameter bookId sesuai instruksi Anda
+        const response = await axios.get(`${BASE_URL}/detail?bookId=${req.params.id}`);
         res.render('detail', { drama: response.data.data });
     } catch (err) {
-        res.status(500).send("Gagal memuat detail drama.");
+        res.status(500).send("Gagal memuat detail.");
     }
 });
 
-// Route Stream
-app.get('/stream/:ep_id', async (req, res) => {
+app.get('/stream/:id', async (req, res) => {
     try {
-        const response = await axios.get(`${BASE_URL}/stream?id=${req.params.ep_id}`);
+        const response = await axios.get(`${BASE_URL}/stream?id=${req.params.id}`);
         res.render('stream', { stream: response.data.data });
     } catch (err) {
         res.status(500).send("Gagal memuat video.");
     }
 });
 
-app.listen(PORT, () => console.log(`Server aktif di port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
