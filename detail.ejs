@@ -3,52 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
     <title><%= drama.series_title %></title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-black text-white">
-    <div class="sticky top-0 bg-gray-900/90 p-4 flex items-center z-50">
-        <button onclick="history.back()" class="text-blue-400 mr-4 font-bold">←</button>
-        <h1 class="truncate font-bold"><%= drama.series_title %></h1>
+    <div class="sticky top-0 bg-black/90 p-4 border-b border-gray-800 flex items-center z-50">
+        <button onclick="history.back()" class="text-blue-500 mr-4 font-bold text-xl">←</button>
+        <h1 class="font-bold truncate text-sm"><%= drama.series_title %></h1>
     </div>
 
-    <div class="p-4 max-w-3xl mx-auto">
-        <div class="relative w-full aspect-[4/5] md:aspect-video rounded-3xl overflow-hidden mb-6 shadow-2xl">
-            <img src="<%= drama.series_cover || drama.cover || (drama.video_list && drama.video_list[0].cover) %>" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-            <div class="absolute bottom-6 left-6">
-                <span class="bg-blue-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                    <%= drama.episode_right_text %>
-                </span>
+    <div class="max-w-2xl mx-auto">
+        <div class="w-full aspect-[3/4] relative">
+            <img src="<%= drama.series_cover || drama.cover %>" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent"></div>
+            <div class="absolute bottom-6 left-6 right-6">
+                <h2 class="text-3xl font-black italic uppercase leading-none mb-2"><%= drama.series_title %></h2>
+                <div class="flex items-center gap-2">
+                    <span class="text-[10px] bg-blue-600 px-2 py-0.5 rounded font-bold uppercase"><%= drama.episode_right_text %></span>
+                    <span class="text-[10px] bg-gray-800 px-2 py-0.5 rounded font-bold uppercase">HD QUALITY</span>
+                </div>
             </div>
         </div>
 
-        <h2 class="text-3xl font-extrabold mb-3"><%= drama.series_title %></h2>
-        <div class="bg-gray-900/50 p-4 rounded-2xl mb-8">
-            <p class="text-gray-300 text-sm leading-relaxed">
+        <div class="p-6">
+            <h3 class="text-lg font-bold mb-3 text-gray-300">SINOPSIS</h3>
+            <p class="text-gray-400 text-sm leading-relaxed mb-8">
                 <%= drama.series_intro %>
             </p>
-        </div>
 
-        <h3 class="text-xl font-bold mb-4 flex items-center">
-            <span class="w-2 h-6 bg-blue-500 mr-3 rounded-full"></span>
-            Semua Episode
-        </h3>
-        <div class="grid grid-cols-1 gap-3">
-            <% drama.video_list.forEach((vid, index) => { %>
-                <a href="/stream/<%= vid.video_id %>" class="flex items-center gap-4 bg-gray-900 p-3 rounded-2xl border border-gray-800 hover:bg-gray-800 transition">
-                    <img src="<%= vid.cover || drama.series_cover %>" class="w-24 h-16 object-cover rounded-lg shrink-0">
-                    <div class="flex-1">
-                        <p class="text-sm font-bold">Episode <%= index + 1 %></p>
-                        <p class="text-[10px] text-gray-500 uppercase">HD Quality</p>
-                    </div>
-                    <div class="bg-blue-600/20 p-2 rounded-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                </a>
-            <% }) %>
+            <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                <span class="w-1 h-5 bg-blue-500 rounded-full"></span>
+                DAFTAR EPISODE
+            </h3>
+            <div class="grid grid-cols-1 gap-3">
+                <% if(drama.video_list) { %>
+                    <% drama.video_list.forEach((vid, index) => { %>
+                        <a href="/stream/<%= vid.video_id %>" class="flex gap-4 bg-gray-900/40 p-3 rounded-2xl border border-gray-800 hover:bg-gray-800">
+                            <div class="w-24 h-16 bg-gray-800 rounded-xl overflow-hidden shrink-0 border border-gray-700">
+                                <img src="<%= vid.episode_cover || drama.series_cover %>" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex flex-col justify-center">
+                                <p class="text-sm font-bold">Episode <%= index + 1 %></p>
+                                <p class="text-[10px] text-blue-500 font-bold">PLAY NOW</p>
+                            </div>
+                        </a>
+                    <% }) %>
+                <% } %>
+            </div>
         </div>
     </div>
 </body>
