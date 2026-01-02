@@ -14,41 +14,38 @@
     </div>
 
     <div class="max-w-2xl mx-auto">
-        <div class="w-full aspect-[3/4] relative">
-            <img src="<%= drama.series_cover || drama.cover %>" class="w-full h-full object-cover">
+        <div class="w-full aspect-[3/4] relative bg-gray-900">
+            <img src="<%= drama.series_cover || drama.cover %>" referrerpolicy="no-referrer" class="w-full h-full object-cover">
             <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent"></div>
-            <div class="absolute bottom-6 left-6 right-6">
-                <h2 class="text-3xl font-black italic uppercase leading-none mb-2"><%= drama.series_title %></h2>
-                <div class="flex items-center gap-2">
-                    <span class="text-[10px] bg-blue-600 px-2 py-0.5 rounded font-bold uppercase"><%= drama.episode_right_text %></span>
-                    <span class="text-[10px] bg-gray-800 px-2 py-0.5 rounded font-bold uppercase">HD QUALITY</span>
-                </div>
-            </div>
         </div>
 
         <div class="p-6">
-            <h3 class="text-lg font-bold mb-3 text-gray-300">SINOPSIS</h3>
+            <h2 class="text-2xl font-black mb-2 uppercase"><%= drama.series_title %></h2>
+            <p class="text-[10px] bg-blue-600 inline-block px-2 py-1 rounded font-bold mb-4">
+                <%= drama.episode_right_text %>
+            </p>
+            
+            <h3 class="text-lg font-bold mb-2 text-gray-300">SINOPSIS</h3>
             <p class="text-gray-400 text-sm leading-relaxed mb-8">
                 <%= drama.series_intro %>
             </p>
 
-            <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-                <span class="w-1 h-5 bg-blue-500 rounded-full"></span>
-                DAFTAR EPISODE
-            </h3>
+            <h3 class="text-lg font-bold mb-4">DAFTAR EPISODE</h3>
             <div class="grid grid-cols-1 gap-3">
-                <% if(drama.video_list) { %>
+                <% if(drama.video_list && drama.video_list.length > 0) { %>
                     <% drama.video_list.forEach((vid, index) => { %>
-                        <a href="/stream/<%= vid.video_id %>" class="flex gap-4 bg-gray-900/40 p-3 rounded-2xl border border-gray-800 hover:bg-gray-800">
-                            <div class="w-24 h-16 bg-gray-800 rounded-xl overflow-hidden shrink-0 border border-gray-700">
-                                <img src="<%= vid.episode_cover || drama.series_cover %>" class="w-full h-full object-cover">
+                        <a href="/stream/<%= vid.video_id %>" class="flex gap-4 bg-gray-900 p-3 rounded-xl border border-gray-800">
+                            <div class="w-24 h-16 bg-gray-800 rounded-lg overflow-hidden shrink-0">
+                                <img src="<%= vid.episode_cover || drama.series_cover %>" referrerpolicy="no-referrer" class="w-full h-full object-cover">
                             </div>
                             <div class="flex flex-col justify-center">
                                 <p class="text-sm font-bold">Episode <%= index + 1 %></p>
-                                <p class="text-[10px] text-blue-500 font-bold">PLAY NOW</p>
+                                <p class="text-[10px] text-blue-500 font-bold uppercase">Nonton Sekarang</p>
                             </div>
                         </a>
                     <% }) %>
+                <% } else { %>
+                    <p class="text-gray-600 italic">Daftar episode tidak ditemukan.</p>
                 <% } %>
             </div>
         </div>
