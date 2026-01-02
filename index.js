@@ -25,11 +25,11 @@ app.get('/', async (req, res) => {
 
 app.get('/detail/:id', async (req, res) => {
     try {
+        // Menggunakan query bookId sesuai instruksi
         const response = await axios.get(`${BASE_URL}/detail?bookId=${req.params.id}`);
-        // Mengirim data utama ke template detail
-        res.render('detail', { drama: response.data.data });
+        res.render('detail', { drama: response.data.data || {} });
     } catch (err) {
-        res.status(500).send("Gagal memuat detail drama.");
+        res.status(500).send("Gagal memuat detail.");
     }
 });
 
@@ -42,5 +42,5 @@ app.get('/stream/:id', async (req, res) => {
     }
 });
 
-app.listen(PORT, () => console.log(`App running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
