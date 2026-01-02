@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-white">
+    <nav class="sticky top-0 bg-black/95 p-4 border-b border-gray-800 flex justify-around font-bold z-50">
+        <a href="/" class="<%= active === 'home' ? 'text-blue-500' : '' %>">Home</a>
+        <a href="/hot" class="<%= active === 'hot' ? 'text-blue-500' : '' %>">Hot</a>
+        <a href="/for-you" class="<%= active === 'foryou' ? 'text-blue-500' : '' %>">For You</a>
+    </nav>
+
+    <div class="p-4 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        <% dramas.forEach(item => { %>
+            <a href="/detail/<%= item.id %>" class="block bg-gray-900 rounded-lg overflow-hidden transition transform hover:scale-105">
+                <img src="<%= item.image %>" class="w-full aspect-[3/4] object-cover">
+                <p class="p-2 text-xs truncate text-center"><%= item.title %></p>
+            </a>
+        <% }) %>
+    </div>
+</body>
+</html>
