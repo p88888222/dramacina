@@ -3,48 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= drama.title %> - Detail</title>
+    <title><%= drama.series_title %></title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-black text-white">
-    <div class="p-4 flex items-center border-b border-gray-800 sticky top-0 bg-black/90 z-50">
-        <button onclick="history.back()" class="mr-4 text-gray-400">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-        </button>
-        <h1 class="text-lg font-bold truncate"><%= drama.title %></h1>
+    <div class="p-4 flex items-center bg-gray-900 sticky top-0 z-50">
+        <button onclick="history.back()" class="mr-4 text-blue-400">← Kembali</button>
+        <h1 class="font-bold truncate"><%= drama.series_title %></h1>
     </div>
 
-    <div class="max-w-4xl mx-auto p-4">
-        <div class="flex flex-col md:flex-row gap-6 mb-8">
-            <img src="<%= drama.thumb_url %>" class="w-full md:w-64 rounded-xl shadow-2xl">
-            <div class="flex-1">
-                <h2 class="text-3xl font-bold mb-2"><%= drama.title %></h2>
-                <div class="flex gap-2 mb-4">
-                    <span class="bg-blue-600 px-2 py-1 rounded text-xs">Full HD</span>
-                    <span class="bg-gray-800 px-2 py-1 rounded text-xs text-gray-300">Drama Short</span>
-                </div>
-                <p class="text-gray-400 text-sm leading-relaxed">
-                    <%= drama.description || 'Tidak ada deskripsi tersedia untuk drama ini.' %>
-                </p>
-            </div>
-        </div>
+    <div class="p-4 max-w-2xl mx-auto">
+        <img src="<%= drama.series_cover %>" class="w-full rounded-2xl shadow-lg mb-6 border border-gray-800">
+        
+        <h2 class="text-2xl font-bold mb-2"><%= drama.series_title %></h2>
+        <p class="text-sm text-gray-400 mb-6 leading-relaxed"><%= drama.series_intro %></p>
 
-        <div class="space-y-3">
-            <h3 class="text-xl font-bold mb-4">Daftar Episode</h3>
-            <% drama.episodes.forEach((ep) => { %>
-                <a href="/stream/<%= ep.id %>" class="flex items-center justify-between bg-gray-900 p-4 rounded-lg hover:bg-gray-800 border border-gray-800 transition">
-                    <span class="font-medium text-gray-200"><%= ep.title %></span>
-                    <div class="flex items-center text-blue-500 text-sm">
-                        <span class="mr-2">Nonton</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                        </svg>
+        <h3 class="font-bold text-lg mb-4">Episode (<%= drama.episode_cnt %>)</h3>
+        <div class="grid grid-cols-1 gap-3">
+            <% drama.video_list.forEach((vid, index) => { %>
+                <a href="/stream/<%= vid.video_id || index %>" class="bg-gray-900 p-4 rounded-xl flex items-center justify-between border border-gray-800 hover:bg-gray-800">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mr-4 font-bold">
+                            <%= index + 1 %>
+                        </div>
+                        <span class="text-sm font-medium">Episode <%= index + 1 %></span>
                     </div>
+                    <span class="text-blue-500 text-xs">Nonton →</span>
                 </a>
             <% }) %>
         </div>
     </div>
 </body>
 </html>
+
