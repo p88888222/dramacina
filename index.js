@@ -25,11 +25,11 @@ app.get('/', async (req, res) => {
 
 app.get('/detail/:id', async (req, res) => {
     try {
-        // Menggunakan parameter bookId sesuai instruksi Anda
         const response = await axios.get(`${BASE_URL}/detail?bookId=${req.params.id}`);
+        // Mengirim data utama ke template detail
         res.render('detail', { drama: response.data.data });
     } catch (err) {
-        res.status(500).send("Gagal memuat detail.");
+        res.status(500).send("Gagal memuat detail drama.");
     }
 });
 
@@ -38,9 +38,9 @@ app.get('/stream/:id', async (req, res) => {
         const response = await axios.get(`${BASE_URL}/stream?id=${req.params.id}`);
         res.render('stream', { stream: response.data.data });
     } catch (err) {
-        res.status(500).send("Gagal memuat video.");
+        res.status(500).send("Gagal memuat player.");
     }
 });
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`App running on port ${PORT}`));
 
