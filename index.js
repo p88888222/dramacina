@@ -25,20 +25,21 @@ app.get('/', async (req, res) => {
 
 app.get('/detail/:id', async (req, res) => {
     try {
-        // Menggunakan query bookId sesuai instruksi
-        const response = await axios.get(`${BASE_URL}/detail?bookId=${req.params.id}`);
+        // Sesuai instruksi: menggunakan book_id
+        const response = await axios.get(`${BASE_URL}/detail?book_id=${req.params.id}`);
         res.render('detail', { drama: response.data.data || {} });
     } catch (err) {
         res.status(500).send("Gagal memuat detail.");
     }
 });
 
-app.get('/stream/:id', async (req, res) => {
+app.get('/stream/:video_id', async (req, res) => {
     try {
-        const response = await axios.get(`${BASE_URL}/stream?id=${req.params.id}`);
-        res.render('stream', { stream: response.data.data });
+        // Sesuai instruksi: menggunakan videoId
+        const response = await axios.get(`${BASE_URL}/stream?videoId=${req.params.video_id}`);
+        res.render('stream', { video: response.data.data || {} });
     } catch (err) {
-        res.status(500).send("Gagal memuat player.");
+        res.status(500).send("Gagal memuat video.");
     }
 });
 
