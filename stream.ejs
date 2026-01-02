@@ -6,12 +6,25 @@
     <meta name="referrer" content="no-referrer">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-black text-white h-screen flex flex-col items-center justify-center p-4">
-    <h2 class="mb-4 text-sm font-bold text-gray-400"><%= stream.title %></h2>
-    <div class="w-full max-w-4xl aspect-video bg-gray-900 rounded-2xl overflow-hidden shadow-2xl">
-        <iframe src="<%= stream.url %>" class="w-full h-full" allowfullscreen frameborder="0"></iframe>
+<body class="bg-black text-white h-screen flex flex-col">
+    <div class="p-4 flex items-center">
+        <button onclick="history.back()" class="text-blue-500 mr-4 font-bold text-xl">←</button>
+        <span class="text-xs font-bold text-gray-400">VIDEO PLAYER</span>
     </div>
-    <button onclick="history.back()" class="mt-8 bg-blue-600 px-8 py-2 rounded-full font-bold">KEMBALI</button>
+    
+    <div class="flex-1 flex items-center justify-center p-4">
+        <div class="w-full max-w-4xl aspect-video bg-gray-900 rounded-2xl overflow-hidden shadow-2xl">
+            <% if(video.main_url) { %>
+                <video src="<%= video.main_url %>" controls class="w-full h-full" poster="<%= video.cover %>"></video>
+            <% } else { %>
+                <div class="flex items-center justify-center h-full text-gray-500 italic text-sm">Link video tidak tersedia atau kadaluarsa</div>
+            <% } %>
+        </div>
+    </div>
+    
+    <div class="p-6 text-center">
+        <p class="text-[10px] text-gray-600">Gunakan browser terbaru jika video tidak berputar.</p>
+    </div>
 </body>
 </html>
 
