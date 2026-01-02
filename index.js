@@ -15,28 +15,36 @@ app.get('/', async (req, res) => {
             axios.get(`${BASE_URL}/trending`)
         ]);
 
-        res.render('index', { 
-            latest: latestRes.data.data || [], 
-            trending: trendingRes.data.data || [] 
-        });
+        // Mengambil array dari property 'books'
+        const latest = latestRes.data.books || [];
+        const trending = trendingRes.data.books || [];
+
+        res.render('index', { latest, trending });
     } catch (err) {
-        console.error(err);
+        console.error("API Error:", err.message);
         res.render('index', { latest: [], trending: [] });
     }
 });
 
-app.get('/detail/:id', async (req, res) => {
+// Detail Drama menggunakan book_id
+app.get('/detail/:book_id', async (req, res) => {
     try {
-        const response = await axios.get(`${BASE_URL}/detail?id=${req.params.id}`);
+        const response = await axios.get(`${BASE_URL}/detail?id=${req.params.book_id}`);
+        // Asumsi detail juga mengembalikan objek di dalam 'data' atau 'book'
         res.render('detail', { drama: response.data.data });
-    } catch (err) { res.send("Gagal memuat detail."); }
+    } catch (err) {
+        res.send("Gagal memuat detail drama.");
+    }
 });
 
-app.get('/stream/:id', async (req, res) => {
+// Stream Drama menggunakan id episode
+app.get('/stream/:ep_id', async (req, res) => {
     try {
-        const response = await axios.get(`${BASE_URL}/stream?id=${req.params.id}`);
+        const response = await axios.get(`${BASE_URL}/stream?id=${req.params.ep_id}`);
         res.render('stream', { stream: response.data.data });
-    } catch (err) { res.send("Gagal memuat player."); }
+    } catch (err) {
+        res.send("Gagal memuat player.");
+    }
 });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
